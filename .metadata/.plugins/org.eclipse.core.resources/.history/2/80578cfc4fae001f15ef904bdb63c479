@@ -1,0 +1,74 @@
+package com.backend;
+
+import java.util.*;
+
+public class BuzzDaySale {
+    
+    public static void main(String[] args) {
+        // Static input values
+        int N = 7; // Number of items
+        int[] ids = {4, 9, 11, 13, 15, 5, 25}; // Item IDs
+        int[] costs = {1, 4, 2, 6, 3, 7, 8}; // Item costs
+        int A = 10; // Amount Veda has
+        
+        // Call the method to get the result
+        int[] result = calculateMaxFreeItemsAndWorth(N, ids, costs, A);
+        
+        // Print the result
+        System.out.println(result[0] + " " + result[1]);
+    }
+    
+    public static int[] calculateMaxFreeItemsAndWorth(int N, int[] ids, int[] costs, int A) {
+        // Mapping of item ID to free items (factors)
+        Map<Integer, List<Integer>> freeItemsMap = new HashMap<>();
+        
+        // Populate the free items map
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (i != j && ids[i] % ids[j] == 0) {
+                    freeItemsMap.computeIfAbsent(ids[i], k -> new ArrayList<>()).add(ids[j]);
+                }
+            }
+        }
+        
+        int maxFreeItems = 0;
+        int maxTotalWorth = 0;
+        
+        // Evaluate each item for purchase
+        for (int i = 0; i < N; i++) {
+            int itemId = ids[i];
+            int itemCost = costs[i];
+            
+            // Calculate the maximum quantity that can be purchased
+            int maxQuantity = A / itemCost;
+            
+            // Calculate free items and their worth for each quantity
+            for (int quantity = 1; quantity <= maxQuantity; quantity++) {
+                // Count free items and their total worth
+                List<Integer> freeItems = freeItemsMap.get(itemId);
+                if (freeItems != null) {
+                    int totalFreeItems = quantity * freeItems.size();
+                    int totalFreeWorth = 0;
+                    for (int freeItemId : freeItems) {
+                        for (int j = 0; j < N; j++) {
+                            if (ids[j] == freeItemId) {
+                                totalFreeWorth += costs[j];
+                                break;
+                            }
+                        }
+                    }
+                    totalFreeWorth *= quantity; // Total worth for the quantity purchased
+                    
+                    // Update max values based on conditions
+                    if (totalFreeItems > maxFreeItems || 
+                        (totalFreeItems == maxFreeItems && totalFreeWorth > maxTotalWorth)) {
+                        maxFreeItems = totalFreeItems;
+                        maxTotalWorth = totalFreeWorth;
+                    }
+                }
+            }
+        }
+        
+        return new int[]{maxFreeItems, maxTotalWorth};
+    }
+}

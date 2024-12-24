@@ -1,0 +1,53 @@
+package com.backend;
+
+public class PaintWall {
+
+    // Method to calculate the area of the polygon using the Shoelace Theorem
+    public static double polygonArea(int[][] vertices) {
+        int n = vertices.length;
+        double area = 0;
+        for (int i = 0; i < n; i++) {
+            int x1 = vertices[i][0];
+            int y1 = vertices[i][1];
+            int x2 = vertices[(i + 1) % n][0];
+            int y2 = vertices[(i + 1) % n][1];
+            area += x1 * y2 - x2 * y1;
+        }
+        return Math.abs(area) / 2.0;
+    }
+
+    // Method to calculate the minimum number of presses required
+    public static int minPressesToPaintWall(int[][] vertices, int M) {
+        // Calculate the area of the wall (polygon)
+        double area = polygonArea(vertices);
+
+        // The area covered by one press of the brush
+        int brushArea = M * M;
+
+        // Calculate the minimum number of presses
+        int numPresses = (int) Math.ceil(area / brushArea);
+
+        return numPresses;
+    }
+
+    public static void main(String[] args) {
+        // Example 1: Input 1
+        int[][] vertices1 = {
+            {0, 2}, {0, 1}, {1, 1}, {1, 0}, {2, 0}, {2, 2},
+            {3, 2}, {3, 3}, {1, 3}, {1, 2}
+        };
+        int brushSize1 = 2;
+
+        // Calculate and print the result for the first example
+        System.out.println(minPressesToPaintWall(vertices1, brushSize1)); // Output: 2
+
+        // Example 2: Input 2
+        int[][] vertices2 = {
+            {0, 0}, {8, 0}, {8, 1}, {0, 1}
+        };
+        int brushSize2 = 2;
+
+        // Calculate and print the result for the second example
+        System.out.println(minPressesToPaintWall(vertices2, brushSize2)); // Output: 4
+    }
+}

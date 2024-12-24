@@ -1,0 +1,122 @@
+package firsrqst;
+
+//a) Class and Object
+class Animal {
+ String name;
+ int age;
+
+ // b) Class constructor
+ Animal(String name, int age) {
+     this.name = name;
+     this.age = age;
+ }
+
+ void display() {
+     System.out.println("Name: " + name);
+     System.out.println("Age: " + age);
+ }
+
+ // c) Method overloading
+ void makeSound() {
+     System.out.println("Animal makes a sound");
+ }
+
+ void makeSound(String sound) {
+     System.out.println("Animal makes a " + sound);
+ }
+}
+
+//d) Method overriding
+class Dog extends Animal {
+ Dog(String name, int age) {
+     super(name, age);
+ }
+
+ @Override
+ void makeSound() {
+     System.out.println("Dog barks");
+ }
+}
+
+//e) Inheritance
+class Cat extends Animal {
+ Cat(String name, int age) {
+     super(name, age);
+ }
+
+ @Override
+ void makeSound() {
+     System.out.println("Cat meows");
+ }
+}
+
+//f) Interface
+interface Pet {
+ void play();
+}
+
+class Parrot extends Animal implements Pet {
+ Parrot(String name, int age) {
+     super(name, age);
+ }
+
+ @Override
+ void makeSound() {
+     System.out.println("Parrot squawks");
+ }
+
+ @Override
+ public void play() {
+     System.out.println("Parrot plays with toys");
+ }
+}
+
+//g) Abstract class
+abstract class Fish extends Animal {
+ Fish(String name, int age) {
+     super(name, age);
+ }
+
+ abstract void swim();
+}
+
+class Goldfish extends Fish {
+ Goldfish(String name, int age) {
+     super(name, age);
+ }
+
+ @Override
+ void swim() {
+     System.out.println("Goldfish swims in a tank");
+ }
+
+ @Override
+ void makeSound() {
+     System.out.println("Goldfish bubbles");
+ }
+}
+
+public class OOPConcepts {
+ public static void main(String[] args) {
+     Animal animal = new Animal("Generic Animal", 5);
+     Dog dog = new Dog("Buddy", 3);
+     Cat cat = new Cat("Whiskers", 2);
+     Parrot parrot = new Parrot("Polly", 1);
+     Goldfish goldfish = new Goldfish("Goldie", 1);
+
+     animal.display();
+     dog.display();
+     cat.display();
+     parrot.display();
+     goldfish.display();
+
+     animal.makeSound();
+     dog.makeSound();
+     cat.makeSound();
+     parrot.makeSound();
+     parrot.play();
+     goldfish.makeSound();
+     goldfish.swim();
+ }
+}
+

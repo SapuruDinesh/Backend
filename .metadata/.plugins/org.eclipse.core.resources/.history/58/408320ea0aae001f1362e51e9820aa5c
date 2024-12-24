@@ -1,0 +1,72 @@
+package question1;
+
+public interface InterFace {
+
+	public void m1(int y,int z);
+	
+	public void m1(int x);
+}
+
+package com.question1;
+
+public abstract class Abstract implements InterFace {
+
+	int x;
+	int y;
+	public Abstract(int x,int a) {
+		this.x=x;
+		this.y=a;
+	}
+	@Override
+	public void m1(int y,int z) {
+		this.x=y;
+		this.y=z;
+		
+		System.out.println(x);
+		System.out.println(y);
+		
+		
+	}
+
+
+	@Override
+	public abstract void m1(int a);
+
+}
+
+package com.question1;
+
+public class Test1 extends Abstract {
+
+	public Test1(int x, int a) {
+		super(x, a);
+		// TODO Auto-generated constructor stub
+	}
+	int a;
+	@Override
+	public void m1(int a) {
+		
+		System.out.println(a);
+
+	}
+
+	
+
+}
+
+package question1;
+
+public class sample {
+
+	public static void main(String[] args) {
+		
+		Test1 test1 = new Test1(10,20);
+		
+		test1.m1(20, 10);
+		test1.m1(30);
+		
+
+	}
+
+}
+

@@ -1,0 +1,87 @@
+package com.backend;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class OfficeRostering {
+
+    public static int officeRostering(int n, int m, int[][] friendships, int k) {
+        // Initialize the status of employees: all WFO on day 1
+        boolean[] status = new boolean[n];
+        Arrays.fill(status, true);  // All employees are WFO on Day 1
+
+        // Create a graph to represent friendships (adjacency list)
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int[] friendship : friendships) {
+            // Ensure indices are within bounds
+            if (friendship[0] < n && friendship[1] < n) {
+                graph.get(friendship[0]).add(friendship[1]);
+                graph.get(friendship[1]).add(friendship[0]);
+            }
+        }
+
+        int totalRosteringValue = 0;
+        int days = 0;
+
+        while (totalRosteringValue < k) {
+            // Calculate current day's rostering value (number of WFO employees)
+            int currentRosteringValue = 0;
+            for (boolean s : status) {
+                if (s) currentRosteringValue++;
+            }
+            totalRosteringValue += currentRosteringValue;
+            days++;
+
+            if (totalRosteringValue >= k) break;
+
+            // Prepare next day's status based on current friendships and WFO/WFH rules
+            boolean[] newStatus = new boolean[n];
+            for (int i = 0; i < n; i++) {
+                int friendCount = 0;
+                for (int friend : graph.get(i)) {
+                    if (status[friend]) friendCount++;
+                }
+
+                // Applying the WFO/WFH rules
+                if (status[i]) {  // Employee is WFO today
+                    newStatus[i] = (friendCount == 3);  // Stay WFO if exactly 3 friends are WFO
+                } else {  // Employee is WFH today
+                    newStatus[i] = (friendCount < 3);  // Switch to WFO if fewer than 3 friends are WFO
+                }
+            }
+            status = newStatus;
+        }
+
+        return days;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read number of employees and friendships
+        int n = 4;
+        int m = 5;
+        
+        // Read friendships
+        int[][] friendships = {
+                {1, 3},
+                {3, 2},
+                {0, 3},
+                {0, 1},
+                {2, 1}
+            };
+        
+        // Read the required rostering value
+        int k = 8;
+        
+        // Calculate and print the number of days to reach the rostering value
+        System.out.println(officeRostering(n, m, friendships, k));
+        
+        scanner.close();
+    }
+}

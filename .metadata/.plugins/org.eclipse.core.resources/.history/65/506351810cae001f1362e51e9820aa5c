@@ -1,0 +1,11 @@
+package com.question1;
+
+public class Sample {
+
+	public static void main(String[] args) {
+		Test1 test1 = new Test1(10, 20); 
+		test1.m1(20, 10); 
+		test1.m1(30);
+	}
+
+}

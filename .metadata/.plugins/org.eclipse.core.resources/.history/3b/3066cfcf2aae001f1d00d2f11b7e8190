@@ -1,0 +1,40 @@
+package com.excelr.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.excelr.model.Employee;
+import com.excelr.repo.EmployeeRepo;
+
+@Service
+public class ExcelrService {
+    @Autowired
+    private EmployeeRepo employeerepo;
+
+    public Employee addEmployee(Employee employee) {
+        return employeerepo.save(employee);
+    }
+
+    public Employee updateEmployee(int id, Employee employeeDetails) {
+        Employee employee = employeerepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        employee.setName(employeeDetails.getName());
+        employee.setDepartment(employeeDetails.getDepartment());
+        employee.setSalary(employeeDetails.getSalary());
+        return employeerepo.save(employee);
+    }
+
+    public void deleteEmployee(int id) {
+        Employee employee = employeerepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        employeerepo.delete(employee);
+    }
+
+    public List<Employee> getAllEmployees() {
+        return employeerepo.findAll();
+    }
+}
+
+}

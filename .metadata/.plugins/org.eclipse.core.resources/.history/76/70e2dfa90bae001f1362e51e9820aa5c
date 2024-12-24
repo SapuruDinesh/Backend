@@ -1,0 +1,8 @@
+package com.question1;
+
+public interface Interface {
+public void m1(int y,int z);
+	
+	public void m1(int x);
+
+}
